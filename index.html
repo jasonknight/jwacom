@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<title>jPad With Wacom Support</title>
+		<style type="text/css">
+			.draggable {cursor:hand}
+		</style>
+		<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+		<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" src="jquery.wacom.js"></script>
+		<script type="text/javascript" src="app.js"></script>
+	</head>
+	<body>
+	<table width="100%" id="main_table" align="center">
+		<tr>
+			<td width="50%">
+				Images go here...
+			</td>
+			<td width="50%">
+				<div id="canvas_div">
+	    			<canvas id="canvas"></canvas>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				
+				<table width="50%" align="center">
+					<tr>
+						<td>Pointer Type:</td>
+						<td id="pointer_type_display"></td>
+					</tr>
+					<tr>
+						<td>Pen Pressure:</td>
+						<td id="pressure_display"></td>
+					</tr>
+				</table>
+
+			</td>
+		</tr>
+	</table>
+	<!--[if IE]>
+
+	<object id='WacomPlugin' classid='CLSID:092dfa86-5807-5a94-bf3b-5a53ba9e5308'>
+	</object>
+
+	<![endif]--><!--[if !IE]> <-->
+
+	<object id="WacomPlugin" type="application/x-wacomtabletplugin">
+		<param name="onload" value="pluginLoaded" />
+	</object>
+
+	<!--> <![endif]-->
+
+	</body>
+</html>
