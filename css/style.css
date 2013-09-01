@@ -1,0 +1,37 @@
+#canvas {
+	cursor: none;
+	border: 1px solid black;
+}
+#debug {
+	position: absolute;
+	bottom: 0;
+}
+#tools {
+	width: 20%;
+	height: 80px;
+	position: absolute;
+	bottom: 0;
+	right: 20px;
+	padding: 5px;
+}
+#tools .tool {
+	width: 20%;
+	float: left;
+    color: black;
+    padding: 5px;
+    height: 45px;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-shadow: 0 -1px 1px rgba(0,0,0,0.5);
+}
+#tools .tool .caption {
+	font-size: 10px;
+	margin-bottom: 10px;
+	text-transform: uppercase;
+}
+#tools .line-tool {
+	width: 100px;
+}
+#tools .spectrum-tool {
+	width: 55px;
+}

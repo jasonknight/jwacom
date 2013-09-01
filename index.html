@@ -5,40 +5,52 @@
 		<style type="text/css">
 			.draggable {cursor:hand}
 		</style>
-		<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+		<link rel="stylesheet" href="css/ui-darkness/jquery-ui-1.10.3.custom.min.css">
+		<link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="css/nice.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="css/spectrum.css" media="screen" />
 		<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+		<script src="js/jquery-ui-1.10.3.custom.js"></script>
+		<script src="js/spectrum.js"></script>
+		<script type="text/javascript" src="bezier.js"></script>
 		<script type="text/javascript" src="jquery.wacom.js"></script>
 		<script type="text/javascript" src="app.js"></script>
 	</head>
 	<body>
-	<table width="100%" id="main_table" align="center">
-		<tr>
-			<td width="50%">
-				Images go here...
-			</td>
-			<td width="50%">
-				<div id="canvas_div">
-	    			<canvas id="canvas"></canvas>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				
-				<table width="50%" align="center">
-					<tr>
-						<td>Pointer Type:</td>
-						<td id="pointer_type_display"></td>
-					</tr>
-					<tr>
-						<td>Pen Pressure:</td>
-						<td id="pressure_display"></td>
-					</tr>
-				</table>
-
-			</td>
-		</tr>
-	</table>
+	<div id="image_div"></div>
+	<div id="canvas_div">
+		<canvas id="canvas" width="800px" height="600px"></canvas>
+		<canvas id="tmp_canvas" width="800px" height="600px" style="display:none;"></canvas>
+	</div>
+	<div id="tools">
+		<div class="tool gradient-dark-radial opacity-tool">
+			<div class="caption"><span>Opacity: </span>
+			<span id="opacity_display"></span></div>
+			
+			<div id="opacity_slider"></div>
+		</div>
+		<div class="tool gradient-dark-radial line-tool">
+			<div class="caption"><span>Line: </span>
+			<span id="lineWidth_display"></span></div>
+			
+			<div id="lineWidth_slider"></div>
+		</div>
+		<div class="tool gradient-dark-radial spectrum-tool">		
+			<input id="spectrum_tool" />
+		</div>
+	</div>
+	<div id="debug">
+		<table width="200px" align="center">
+			<tr>
+				<td>Pointer Type:</td>
+				<td id="pointer_type_display"></td>
+			</tr>
+			<tr>
+				<td>Pen Pressure:</td>
+				<td id="pressure_display"></td>
+			</tr>
+		</table>
+	</div>
 	<!--[if IE]>
 
 	<object id='WacomPlugin' classid='CLSID:092dfa86-5807-5a94-bf3b-5a53ba9e5308'>
