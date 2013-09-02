@@ -7,16 +7,16 @@
 	bottom: 0;
 }
 #tools {
-	width: 20%;
+	width: 80%;
 	height: 80px;
 	position: absolute;
 	bottom: 0;
-	right: 20px;
+	right: 50px;
 	padding: 5px;
 }
 #tools .tool {
 	width: 20%;
-	float: left;
+	float: right;
     color: black;
     padding: 5px;
     height: 45px;
@@ -32,6 +32,25 @@
 #tools .line-tool {
 	width: 100px;
 }
+#tools .opacity-tool {
+	width: 100px;
+}
 #tools .spectrum-tool {
 	width: 55px;
+}
+ul.swatches li {
+	float: left;
+	margin-right: 5px;
+	border: 1px solid black;
+	height: 40px;
+	width: 15px;
+	list-style: none;
+	cursor: pointer;
+	margin-top: -15px;
+}
+ul.swatches li.sw-caption {
+	width: 65px;
+	margin-left: -50px;
+	border: none;
+	font-size; 11px;
 }

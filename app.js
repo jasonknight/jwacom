@@ -74,6 +74,16 @@ function setupSpectrumTool() {
 	$Wacom.wSetLineColor( e.spectrum('get').toHexString() );
 
 }
+function setupSwatches() {
+	$('li.swatch').each(function (i,elem){
+		var li = $(elem);
+		li.css( {'background-color': li.attr('data-color')} );
+		li.on('click', function () {
+			$Wacom.wSetLineColor( li.attr('data-color') );
+			$('#spectrum_tool').spectrum('set', li.attr('data-color') );
+		} );
+	});
+}
 $(function () {
 	$Wacom = $('#WacomPlugin').wacom();
 	$('#canvas').on('mousedown', function () {
@@ -91,6 +101,7 @@ $(function () {
 	setupLineWidthTool();
 	setupSpectrumTool();
 	setupOpacityTool();
+	setupSwatches();
 	$Wacom.wSetCanvas( $('#canvas') );
 	$Wacom.wSetTmpCanvas( $('#tmp_canvas') );
 });

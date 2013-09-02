@@ -237,7 +237,7 @@
 		$this.renderVectorsAsPath = function (vectors) {
 			if ( ! vectors[0] )
 				return;
-			var x,y,xc,yc,v,p,w;
+			var x,y,xc,yc,v,p,w,i;
 			var started = false;
 			var ctx = $this._context;
 			var color = '';
@@ -252,15 +252,20 @@
 		    	w = w + (w * p);
 		    }
 			ctx.strokeStyle = color;
-			ctx.globalCompositeOperation = "none";
-			for ( var i = 0; i < vectors.length - 1; i++) {
+			ctx.fillStyle = color;
+			ctx.globalAlpha = $this.wGetOpacity() / 100;
+			console.log( ctx.globalAlpha );
+			ctx.lineWidth = 0.1;
+			var lastx,lasty;
+			for ( i = 0; i < vectors.length - 1; i++) {
 				index++;
 				v = vectors[i];
 				x = v.x;
 				y = v.y;
 				p = v.pressure;
 				w = v.lineWidth;
-				
+				lastx = x;
+				lasty = y;
 				if ( ! started ) {
 					ctx.beginPath();
 					ctx.moveTo(x,y);
@@ -268,23 +273,29 @@
 					continue;
 				}
 				
-				if ( $this.pState.size_jitter) {
-			    	ctx.lineWidth = w * p;
-			    } else {
-			    	ctx.lineWidth = w;
-			    }
 				xc = ( x + vectors[i + 1].x ) / 2;
 				yc = ( y + vectors[i + 1].y ) / 2;
-				ctx.quadraticCurveTo(x,y,xc,yc);
-				if ( i % 3 == 0 ) {
-					ctx.stroke();
-					ctx.beginPath();
-					ctx.moveTo(x,y);
-				}	
+				ctx.quadraticCurveTo(x,y,xc,yc);	
 			}
-			if (index % 3 != 0) {
-				ctx.stroke();
-			}	
+			var cv, nv,dx,dy,xr,yr,fx,fy,t;
+			for ( i = vectors.length - 1; i > 0; i-- ) {	
+				cv = vectors[i];
+				nv = vectors[ i - 1 ];
+				if ( ! nv )
+					continue;
+				t = cv.pressure * cv.lineWidth;
+				dx = nv.x - cv.x;
+				dy = nv.y - cv.y
+				fx = dx / ( Math.sqrt( (dx * dx ) + (dy * dy ) ) );
+				fy = dy / ( Math.sqrt( (dx * dx ) + (dy * dy ) ) );
+				xr = cv.x + t * fy;
+				yr = cv.y - t * fx;
+				xc = ( xr + nv.x ) / 2;
+				yc = ( yr + nv.y ) / 2;
+				ctx.lineTo(xr,yr);
+			}
+			ctx.closePath();	
+			ctx.fill();
 		}
 		return $this;
 	};

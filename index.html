@@ -23,11 +23,22 @@
 		<canvas id="tmp_canvas" width="800px" height="600px" style="display:none;"></canvas>
 	</div>
 	<div id="tools">
-		<div class="tool gradient-dark-radial opacity-tool">
-			<div class="caption"><span>Opacity: </span>
-			<span id="opacity_display"></span></div>
-			
-			<div id="opacity_slider"></div>
+		<div class="tool gradient-dark-radial swatch-tool">		
+			<ul class="swatches">
+				<li class="sw-caption">Swatches: </li>
+				<li class="swatch" data-color="#252525">&nbsp;</li>
+				<li class="swatch" data-color="#490101">&nbsp;</li>
+				<li class="swatch" data-color="#263059">&nbsp;</li>
+				<li class="swatch" data-color="#0c5c10">&nbsp;</li>
+				<li class="swatch" data-color="#cb0e0e">&nbsp;</li>
+				<li class="swatch" data-color="#b5e7f2">&nbsp;</li>
+				<li class="swatch" data-color="#f4b0f8">&nbsp;</li>
+				<li class="swatch" data-color="#fffddb">&nbsp;</li>
+				<li class="swatch" data-color="#ffffff">&nbsp;</li>
+			</ul>
+		</div>
+		<div class="tool gradient-dark-radial spectrum-tool">		
+			<input id="spectrum_tool" />
 		</div>
 		<div class="tool gradient-dark-radial line-tool">
 			<div class="caption"><span>Line: </span>
@@ -35,9 +46,14 @@
 			
 			<div id="lineWidth_slider"></div>
 		</div>
-		<div class="tool gradient-dark-radial spectrum-tool">		
-			<input id="spectrum_tool" />
+		<div class="tool gradient-dark-radial opacity-tool">
+			<div class="caption"><span>Opacity: </span>
+			<span id="opacity_display"></span></div>
+			
+			<div id="opacity_slider"></div>
 		</div>
+		
+		
 	</div>
 	<div id="debug">
 		<table width="200px" align="center">
