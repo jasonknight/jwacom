@@ -239,14 +239,55 @@
 		    $this.pState.oldY = y;
 		    
 		};
+		$this.routeRender = function ( vectors ) {
+			var first, last;
+			first = vectors[0];
+			last = vectors[ vectors.length - 1];
+			if ( ! first || ! last)
+				return;
+			if (first.shiftKey && last.shiftKey ) {
+				$this.renderVectorsAsStraightLine( vectors );
+			} else {
+				$this.renderVectorsAsPath( vectors );
+			}
+		};
 		$this.wStopDrawing = function ( ev ) {
 			$this.pState.drawing = false;
 			$this.wpRestoreCommittedImageData();
-			$this.renderVectorsAsPath($this.currentLineVectors);
+			//$this.renderVectorsAsPath($this.currentLineVectors);
+			$this.routeRender( $this.currentLineVectors );
 			$this.currentLineVectors = [];
 			$this.wpSaveCommittedImageData();
 			$this.wpRestoreCommittedImageData();
-		}
+		};
+		$this.renderVectorsAsStraightLine = function (vectors) {
+			var ctx = $this._context;
+			var color = '';
+			var pType = vectors[0].penType;
+		    var first, last;
+		    
+			first = vectors[0];
+			last = vectors[ vectors.length - 1];
+			var p = last.pressure;
+			var w = first.lineWidth;
+			if (pType == 'pen') {
+		    	color = $this.options.lineColor;
+		    	w = (w * p);
+		    } else {
+		    	color = $this.options.backgroundColor;
+		    	w = w + (w * p);
+		    }
+		    ctx.save();
+			ctx.strokeStyle = color;
+			ctx.fillStyle = color;
+			ctx.globalAlpha = $this.wGetOpacity() / 100;
+			ctx.lineWidth = w;
+			ctx.beginPath();
+			ctx.moveTo(first.x,first.y);
+			ctx.lineTo(last.x,last.y);
+			ctx.stroke();
+			ctx.restore();
+		};
 		$this.renderVectorsAsPath = function (vectors) {
 			if ( ! vectors[0] )
 				return;
@@ -262,8 +303,8 @@
 		    	color = $this.options.lineColor;
 		    } else {
 		    	color = $this.options.backgroundColor;
-		    	w = w + (w * p);
 		    }
+		    ctx.save();
 			ctx.strokeStyle = color;
 			ctx.fillStyle = color;
 			ctx.globalAlpha = $this.wGetOpacity() / 100;
@@ -333,12 +374,14 @@
 				fy = dy / ( Math.sqrt( (dx * dx ) + (dy * dy ) ) );
 				xr = cv.x + t * fy;
 				yr = cv.y - t * fx;
-				xc = ( xr + nv.x ) / 2;
-				yc = ( yr + nv.y ) / 2;
+				xc = ( xr + cv.x ) / 2;
+				yc = ( yr + cv.y ) / 2;
 				ctx.lineTo(xr,yr);
+				//ctx.quadraticCurveTo(xr,yr);
 			}
 			ctx.closePath();	
 			ctx.fill();
+			ctx.restore();
 		}
 		return $this;
 	};
@@ -372,7 +415,7 @@
 		}
 	}
 	$.fn.wacom.defaults = {
-	    	  'lineWidth':    	3,
+	    	  'lineWidth':    	5,
 	          'lineColor':      '#000',
 	    'backgroundColor': 		'#d0b271',
 	    		'opacity': 		100,
