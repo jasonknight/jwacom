@@ -6,9 +6,7 @@ function updateDebug() {
 	$('#pressure_display').html( $Wacom.wPressure() );
 }
 function setupKeyEvents() {
-	console.log("Setting up events");
 	$(document).keyup(function ( ev ) {
-		console.log(ev.which);
 		if (ev.which == 219) { // decrease brush size
 			var bsize = $Wacom.wGetLineWidth();
 			bsize -= 0.2;
@@ -28,9 +26,9 @@ function setupKeyEvents() {
 			$('#lineWidth_display').html($Wacom.wGetLineWidth());
 			$('#lineWidth_slider').slider("value",bsize);
 		} else {
-			console.log("No Match");
+			//console.log("No Match");
 		}
-		console.log($Wacom.wGetLineWidth());
+		//console.log($Wacom.wGetLineWidth());
 	});
 }
 function setup1() {
