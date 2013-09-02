@@ -254,9 +254,8 @@
 			ctx.strokeStyle = color;
 			ctx.fillStyle = color;
 			ctx.globalAlpha = $this.wGetOpacity() / 100;
-			console.log( ctx.globalAlpha );
 			ctx.lineWidth = 0.1;
-			var lastx,lasty;
+			// First we draw the line
 			for ( i = 0; i < vectors.length - 1; i++) {
 				index++;
 				v = vectors[i];
@@ -264,8 +263,6 @@
 				y = v.y;
 				p = v.pressure;
 				w = v.lineWidth;
-				lastx = x;
-				lasty = y;
 				if ( ! started ) {
 					ctx.beginPath();
 					ctx.moveTo(x,y);
@@ -278,6 +275,7 @@
 				ctx.quadraticCurveTo(x,y,xc,yc);	
 			}
 			var cv, nv,dx,dy,xr,yr,fx,fy,t;
+			// Then we backup and draw a mirrored line
 			for ( i = vectors.length - 1; i > 0; i-- ) {	
 				cv = vectors[i];
 				nv = vectors[ i - 1 ];
