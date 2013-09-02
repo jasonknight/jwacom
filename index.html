@@ -484,9 +484,9 @@
 	</div>
 		<canvas id="canvas" width="800px" height="600px"></canvas>
 	<div id="tools">
+		
 		<div class="tool gradient-dark-radial swatch-tool">		
 			<ul class="swatches">
-				<li class="sw-caption">Swatches: </li>
 				<li class="swatch" data-color="#252525">&nbsp;</li>
 				<li class="swatch" data-color="#490101">&nbsp;</li>
 				<li class="swatch" data-color="#263059">&nbsp;</li>
@@ -513,7 +513,15 @@
 			
 			<div id="opacity_slider"></div>
 		</div>
-		
+		<div class="tool gradient-dark-radial buttons-tool">		
+			
+			<button class="button" id="save_button">Save</button>
+			<button class="button" id="next_image_button">Next Image</button>
+
+			&nbsp;&nbsp;
+
+			<button class="button" id="clear_canvas_button">Clear</button>
+		</div>
 		
 	</div>
 	<div id="debug">
@@ -528,6 +536,8 @@
 			</tr>
 		</table>
 	</div>
+
+	<div id="saveable_image"><img /><br /><button id="hide_saveable">Hide</button></div>
 	<!--[if IE]>
 
 	<object id='WacomPlugin' classid='CLSID:092dfa86-5807-5a94-bf3b-5a53ba9e5308'>

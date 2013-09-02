@@ -19,6 +19,8 @@
 			commited_image_data: null,
 			size_jitter: true,
 			opacity_jitter: true,
+			shiftKey: false,
+			altKey: false,
 		};
 		$this.pData = {};
 		$this.currentLineVectors = [];
@@ -75,10 +77,17 @@
 			$this._canvas_element.bind('mousemove', $this.wDraw);
 			$this._canvas_element.bind('mouseup', 	$this.wStopDrawing);
 			$('body').bind('mouseup', $this.wStopDrawing);
+			$('body').bind('keyup keydown', function (ev) {
+				$this.pState.shiftKey = ev.shiftKey;
+				$this.pState.altKey = ev.altKey;
+			});
+			$this.wClearCanvas();
+		};
+		$this.wClearCanvas = function () {
+			$this._context.clearRect(0,0,$this._canvas_element.width(), $this._canvas_element.height());
 			$this.wFill( $this.options.backgroundColor );
 			$this._context.lineJoin = "bevel";
 			$this._context.lineCap= "butt";
-			
 			$this.wpSaveImageData();
 			$this.wpSaveCommittedImageData();
 			$this.pData.pixel = $this._context.createImageData(1,1);
@@ -164,6 +173,8 @@
 		    vector.pressure = $this.wPressure();
 		    vector.lineWidth = $this.options.lineWidth;
 		    vector.penType = $this.wPointerType();
+		    vector.shiftKey = $this.pState.shiftKey;
+		    vector.altKey = $this.pState.altKey;
 		    $this.currentLineVectors.push(vector);
 		    $this.pState.drawing = true;
 		    $this._context.lineWidth = $this.options.lineWidth;
@@ -201,6 +212,8 @@
 		    	vector.pressure = pressure;
 		    	vector.penType = pType;
 			    vector.lineWidth = $this.options.lineWidth;
+			    vector.shiftKey = $this.pState.shiftKey;
+		    	vector.altKey = $this.pState.altKey;
 			    $this.currentLineVectors.push(vector);
 
 		    	if ( $this.pState.opacity_jitter )
@@ -256,6 +269,7 @@
 			ctx.globalAlpha = $this.wGetOpacity() / 100;
 			ctx.lineWidth = 0.1;
 			// First we draw the line
+			var first = true;
 			for ( i = 0; i < vectors.length - 1; i++) {
 				index++;
 				v = vectors[i];
@@ -269,16 +283,47 @@
 					started = true;
 					continue;
 				}
-				
-				xc = ( x + vectors[i + 1].x ) / 2;
-				yc = ( y + vectors[i + 1].y ) / 2;
-				ctx.quadraticCurveTo(x,y,xc,yc);	
+				if ( i > 1 && v.shiftKey == true ) {
+					var cv = v;
+					var endv = cv;
+					while (endv.shiftKey) {
+						i = i + 1;
+						tv = vectors[i];
+						if (tv)
+							endv = tv;
+						else
+							break;
+					}
+					ctx.lineTo(endv.x,endv.y);
+				} else {
+					xc = ( x + vectors[i + 1].x ) / 2;
+					yc = ( y + vectors[i + 1].y ) / 2;
+					ctx.quadraticCurveTo(x,y,xc,yc);
+				}	
 			}
 			var cv, nv,dx,dy,xr,yr,fx,fy,t;
 			// Then we backup and draw a mirrored line
+			first = true;
 			for ( i = vectors.length - 1; i > 0; i-- ) {	
 				cv = vectors[i];
-				nv = vectors[ i - 1 ];
+				if ( i < vectors.length - 3 && cv.shiftKey == true) {
+					var endv = cv;
+					while ( endv.shiftKey) {
+						i = i -  1;
+						tv = vectors[i];
+						if (tv) {
+							endv = tv;
+						} else {
+							break;
+						}
+					}
+					nv = endv;
+					cv.pressure = nv.pressure;
+				} else {
+					first = false;
+					nv = vectors[ i - 1 ];
+				}
+				
 				if ( ! nv )
 					continue;
 				t = cv.pressure * cv.lineWidth;
@@ -327,7 +372,7 @@
 		}
 	}
 	$.fn.wacom.defaults = {
-	    	  'lineWidth':    	0.1,
+	    	  'lineWidth':    	3,
 	          'lineColor':      '#000',
 	    'backgroundColor': 		'#d0b271',
 	    		'opacity': 		100,

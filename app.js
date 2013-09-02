@@ -50,7 +50,7 @@ function setup1() {
 	img.offset( {top: 10, left: 10} );
 }
 function setupLineWidthTool() {
-	$('#lineWidth_slider').slider({ max: 10, min: 0.1, step: 0.2, value: 0.1});
+	$('#lineWidth_slider').slider({ max: 10, min: 1, step: 0.5, value: $Wacom.wGetLineWidth()});
 	$('#lineWidth_display').html($Wacom.wGetLineWidth());
 	$('#lineWidth_slider').on('slide', function ( evt, ui ) {
 		$Wacom.wSetLineWidth(ui.value);
@@ -90,8 +90,28 @@ function setupSwatches() {
 		} );
 	});
 }
+function setupButtons() {
+	$('#clear_canvas_button').on('click', function () {
+		console.log("clearing")
+		$Wacom.wClearCanvas();
+	});
+	$('#hide_saveable').on('click',function () {
+		$('#saveable_image').hide();
+	});
+	$('#save_button').on('click',function () {
+		var div = $('#saveable_image');
+		var img = div.find('img');
+		var cnvs = document.getElementById('canvas');
+		var ctx = cnvs.getContext("2d");
+		var myImage = cnvs.toDataURL("image/png");
+		img.attr('src',myImage);
+		div.show();
+	});
+	$('#next_image_button').on('click', function () {
+		startSlideShow();
+	});
+}
 function slideShowRandomElement() {
-	console.log('called');
 	var divs = $('#image_div').find('.image');
 	divs.hide();
 	var max = divs.length;
@@ -131,6 +151,9 @@ function slideShowRandomElement() {
 }
 function startSlideShow() {
 	slideShowRandomElement();
+	if ($sTimeOut) {
+		clearInterval( $sTimeOut );
+	}
 	$sTimeOut = setInterval(slideShowRandomElement, 120 * $seconds);
 }
 $(function () {
@@ -152,6 +175,7 @@ $(function () {
 	setupOpacityTool();
 	setupSwatches();
 	startSlideShow();
+	setupButtons();
 	$Wacom.wSetCanvas( $('#canvas') );
 	//$Wacom.wSetTmpCanvas( $('#tmp_canvas') );
 });
